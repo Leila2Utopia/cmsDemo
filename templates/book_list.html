@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <title>book_list</title>
+
+</head>
+<body>
+
+<div class="container">
+    <a href="{% url 'my_addBook' %}" class="btn btn-success" style="margin-top:20px;margin-bottom: 20px;">add</a>
+    <div class="panel panel-primary">
+        <div class="panel-heading">book_list</div>
+        <div class="panel-body">
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>书名</th>
+                    <th>价格</th>
+                    <th>出版时间</th>
+                    <th>备注</th>
+                    <th>出版社</th>
+                    <th>作者</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for book in books %}
+                    <tr data-id="{{ book.id }}">
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.price }}</td>
+                        <td>{{ book.create_time|date:"Y-m-d" }}</td>
+                        <td>{{ book.memo }}</td>
+                        <td>{{ book.publish.name }}</td>
+                        <td>
+                            {% for author in book.author.all %}
+                                {{ author.name }}
+                                {% if not forloop.last %}
+                                    ,
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <a href="{% url 'my_editBook' book.pk %}" class="btn btn-info">edit</a>
+                            <a href="{% url 'my_deleteBook' book.pk %}" class="btn btn-danger">delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="/static/jquery-3.3.1.min.js"></script>
+<script src="/static/bootstrap.min.js"></script>
+
+</body>
+</html>
